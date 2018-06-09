@@ -1,20 +1,20 @@
 configuration of raspberry pi wifi for hotspot / access poin
 =============
 
-my senario for these wase, wifi on board and dongle withc i plugged in to raspberry pi
-in this case we have two WLAN0 and WLAN1, wlan0 must onboard wifi and wlan1 must be for wifi dongle.
+my scenario for this wase, wifi on board and dongle which I plugged into the raspberry pi
+in this case, we have two WLAN0 and WLAN1, wlan0 must onboard wifi and wlan1 must be for wifi dongle.
 
-so i want configure one access point for outdoor device to connect to raspberry pi and communicat and 
-get order from it, like iot device, the other wifi is for internet connection and bring out internet from another accespoint to RPI device.
+so I want to configure one access point for the outdoor device to connect to RaspberryPi and communicate and 
+get an order from it, like IOT device, the other wifi is for internet connection and bring out internet from another access point to RPI device.
 
-after install raspberry pi on SD card and run it, follow step by step configuration below:
+after installing raspberry pi on SD card and run it, follow step by step configuration below:
 
 # How to use
 
 `
 $ sudo apt update
 `
-This command will not actually update any software on the system, but will download the latest package lists from the software repositories so that Raspbian will be aware of all new software available along with dependencies.
+This command will not actually update any software on the system but will download the latest package lists from the software repositories so that Raspbian will be aware of all new software available along with dependencies.
 
 Next, run the following command to upgrade any packages installed on your system that need upgrades:
 `
@@ -25,15 +25,15 @@ This is important to keep your RasPi system synchronized with security updates, 
 
 ### Remote Access 
 
-yes raspberry has its own vncserv build on
-but these two you can skipt it, if you comfirtable with vncserve build on
+yes raspberry has its own Cncserv build on
+but these two you can skip it if you comfortable with Vncserve build on
 `
 $ sudo apt install -y tightvncserver
 $ sudo apt install -y xrdp
 `
 ### Remote Access 
-one of the most important things we should do it install last stable version of nodejs
-You now have an amazing general purpose Raspberry Pi system that can be used for a variety of tasks and inter-operates well in the Windows world (it even looks like a Windows machine to the other Windows machines!) – and can play nicely in the Mac and Linux world too.  Let’s go ahead and install Node.js so we will be ready to do some fun projects in the future.  Here are the steps:
+one of the most important things we should do it install last stable version of Nodejs
+You now have an amazing general-purpose Raspberry Pi system that can be used for a variety of tasks and inter-operates well in the Windows world (it even looks like a Windows machine to the other Windows machines!) – and can play nicely in the Mac and Linux world too.  Let’s go ahead and install Node.js so we will be ready to do some fun projects in the future.  Here are the steps:
 
 Our friends at NodeSource host and maintain some excellent Node.js binary distributions.  We will leverage a command they have written to add another package repository to our RasPi so that we will be able to “apt install” a modern version of Node.js from their repository.  This is beneficial since the Debian/Raspbian versions may not always be up to date.  By adding the NodeSource repository, we will also be able to receive updates rather than just installing a standalone (.deb) file version of Node that cannot be updated easily.
 
@@ -112,10 +112,12 @@ To install the stable version use the Menu - `Manage palette option` and search 
 
 
 ##wifi hotspot
-i quat cheack all touterial from internet and all of them hase woriking well when senaria is for one wifi and ethernut, but when you bring out two wifi in `ifconfig` after reboot you will be face a problame, some times both `wlan` connetc to interface you chose for one of them, some times wlan spesific name change randomly after each time you reboot or shoutdown.
-so i follow main <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">documantation</a> for configuaration hotspot, and change and add some conf to fixe the problam:
 
-in `/etc/dhcpcd.conf` set spesific metric parameters:
+
+I quite check all tutorial from internet and all of them have worked well when scenario is for one wifi and ethernet, but when you bring out two wifi (one is onboard the other one is dongle) in `ifconfig` after reboot you will be facing a problem, sometimes both `wlan` connect to interface you chose for one of them, or sometimes wlan specific name change randomly after each time you reboot or shutdown.( i mean some time wifi dongle register faster than onboard wifi, I really don't know why it happens)
+so i follow main <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">documantation</a> for configuration hotspot, and add some conf to fixe a litter the problem:
+
+in `/etc/dhcpcd.conf`, I set specific metric parameters:
 
 `
 interface wlan0
@@ -131,8 +133,12 @@ after than in `/etc/network/interfaces` file set particulary `wpa_conf` for each
 iface wlan0 inet auto
     wpa_conf /etc/wpa_supplicant/wpa_supplicant_wlan0.conf
 
-ifcae wlan1 inet auto 
+iface wlan1 inet auto 
     wpa_conf /etc/wpa_sipplicant/wpa_supplicant_wlan1.conf
 `
-after these tow changes my problam fixe and hotspot work as i wnated.
-for more configuration i found <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">this link</a> witch explan quit good for these senario, but beceful affter this touretial, add metric parameter to interfaces.
+after these two changes, my problem fixed and hotspot work as I wanted.
+but somehow problems remain, so for fixed it, I set manually interfaces in `/etc/wpa_supplicant/wpa_supplican.conf` and the specific wlan that I want to connect to internet, in my case it was 'wlan1' (`/etc/wpa_supplicant/wpa_supplican_wlan1.conf`) and put away the other `wpa_supplicant` which is `wlan0`.
+this setup works most of the time, it does not work well! for example like when you shutdown device, I waiting for boot up if hotspot was on my interfaces scan list so it's work well, but if it's not I `sudo reboot` device then it will be applied in my scan list.
+
+for more configuration i found <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">this link</a> witch explan quite good for these senario, but beceful affter this touretial, add metric parameter to interfaces.
+

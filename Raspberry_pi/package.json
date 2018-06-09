@@ -1,0 +1,20 @@
+{
+  "name": "Raspberry_pi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Wif_autoConf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "spies": "./Wif_autoConf.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.15.1",
+    "inquirer": "^6.0.0"
+  }
+}
