@@ -113,6 +113,9 @@ To install the stable version use the Menu - `Manage palette option` and search 
 
 ##wifi hotspot
 
+//https://raspberrypi.stackexchange.com/questions/82130/how-to-disable-automatic-wifi-connection-on-wlan0-stretch
+
+
 
 I quite check all tutorial from internet and all of them have worked well when scenario is for one wifi and ethernet, but when you bring out two wifi (one is onboard the other one is dongle) in `ifconfig` after reboot you will be facing a problem, sometimes both `wlan` connect to interface you chose for one of them, or sometimes wlan specific name change randomly after each time you reboot or shutdown.( i mean some time wifi dongle register faster than onboard wifi, I really don't know why it happens)
 so i follow main <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">documantation</a> for configuration hotspot, and add some conf to fixe a litter the problem:
@@ -140,5 +143,5 @@ after these two changes, my problem fixed and hotspot work as I wanted.
 but somehow problems remain, so for fixed it, I set manually interfaces in `/etc/wpa_supplicant/wpa_supplican.conf` and the specific wlan that I want to connect to internet, in my case it was 'wlan1' (`/etc/wpa_supplicant/wpa_supplican_wlan1.conf`) and put away the other `wpa_supplicant` which is `wlan0`.
 this setup works most of the time, it does not work well! for example like when you shutdown device, I waiting for boot up if hotspot was on my interfaces scan list so it's work well, but if it's not I `sudo reboot` device then it will be applied in my scan list.
 
-for more configuration i found <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">this link</a> witch explan quite good for these senario, but beceful affter this touretial, add metric parameter to interfaces.
+for more configuration i found <a href="https://scribles.net/creating-wireless-router-using-raspberry-pi-zero-w/">this link</a> witch explan quite good for these senario, but beceful affter this touretial, add metric parameter to interfaces.
 
